@@ -53,6 +53,20 @@
             <dd>{{ booking.extra_info }}</dd>
             {% endif %}
         </dl>
+
+        <hr size="100">
+
+        <div>
+            <h2>Pending payments</h2>
+            <div>
+                {% for payment in waiting_payments %}
+                <div class="row">
+                    <div class="col-md-11">{{ payment.amount.currency.code }} {{ payment.amount.amount }}</div>
+                    <div class="col-md-1"><a href="{% url 'payment_start' %}?order_id={{ payment.invoice_id }}" class="btn btn-primary">Pay</a></div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 <style>

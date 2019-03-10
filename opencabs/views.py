@@ -93,7 +93,8 @@ def booking_details(request):
         'settings': settings,
         'booking': booking,
         'payment_status': payment_status,
-        'order_id': order_id
+        'order_id': order_id,
+        'waiting_payments': booking.list_waiting_payments()
     })
 
 

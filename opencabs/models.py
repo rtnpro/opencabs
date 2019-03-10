@@ -272,6 +272,9 @@ class Booking(models.Model):
     def get_admin_url(self):
         return urlresolvers.reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
+    def list_waiting_payments(self):
+        return self.payments.filter(payment_method='PG', status='WAT')
+
     def save(self, *args, **kwargs):
         if not self.customer_email and not self.customer_mobile:
             raise ValidationError('Either of customer email and mobile is '
