@@ -273,7 +273,7 @@ class Booking(models.Model):
         return urlresolvers.reverse("admin:%s_%s_change" % (self._meta.app_label, self._meta.model_name), args=(self.id,))
 
     def list_waiting_payments(self):
-        return self.payments.filter(payment_method='PG', status='WAT')
+        return self.payments.filter(mode='PG', status='WAT')
 
     def save(self, *args, **kwargs):
         if not self.customer_email and not self.customer_mobile:
