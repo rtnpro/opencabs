@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core import urlresolvers
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.fields import GenericRelation
+from django.urls import reverse
 from django.utils import timezone
 from django.core.mail import send_mail
 
