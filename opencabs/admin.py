@@ -220,9 +220,19 @@ class BookingAdmin(ExportMixin, admin.ModelAdmin):
                 if obj.driver:
                     obj.send_trip_details_to_driver()
         if 'Payment' in str(formset.model):
+            send_payment_notification = False
             for obj in formset.new_objects:
                 obj.created_by = request.user
                 obj.save()
+                if obj.payment_method == 'PG' and obj.status == 'WAT':
+                    send_payment_notification = True
+
+            for obj, fields in formset.changed_objects:
+                if ('payment_method' in fields or 'status' in fields) and \
+                        (obj.payment_method == 'PG' and obj.status == 'WAT'):
+                    send_payment_notification = True
+            if send_payment_notification:
+                obj.bookings.first().send_payment_notification()
 
 
 @admin.register(BookingVehicle)

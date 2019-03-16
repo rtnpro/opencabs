@@ -426,6 +426,22 @@ class Booking(models.Model):
         f.close()
         return f.name
 
+    def send_payment_notification(self):
+        if not settings.SEND_CUSTOMER_SMS:
+            return
+        msg = (
+            "Payment link(s) has been generated for your booking ID: {}"
+            ".\nYou can make the payment from {}"
+        ).format(self.booking_id,
+                 reverse('booking_details') + '?bookingid=' + self.booking_id)
+        if self.customer_mobile:
+            send_sms([self.customer_mobile], msg)
+        if self.customer_email:
+            subject = 'Payment link'
+            send_mail(subject, msg, settings.FROM_EMAIL,
+                      [self.customer_email])
+
+
     def send_trip_status_to_customer(self):
         if not settings.SEND_CUSTOMER_SMS:
             return
